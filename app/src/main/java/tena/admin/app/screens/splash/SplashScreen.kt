@@ -31,9 +31,9 @@ class SplashScreen : Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if(prefs.get(USER_DETAILS,"")!="") {
-                loadScreen(requireActivity(), HomeScreen())
+                loadScreen(requireActivity(), HomeScreen(),"SplashScreen")
             } else {
-                loadScreen(requireActivity(), SignInScreen())
+                loadScreen(requireActivity(), SignInScreen(),"SplashScreen")
             }
         }, 5000)
     }

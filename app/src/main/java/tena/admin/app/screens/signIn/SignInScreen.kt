@@ -82,9 +82,8 @@ class SignInScreen : Fragment() {
                             emailId = ""
                         )
                         prefs.put(USER_DETAILS, Gson().toJson(userData))
-
                         //LoadHome Screen
-                        loadScreen(requireActivity(), HomeScreen())
+                        loadScreen(requireActivity(), HomeScreen(),"SignInScreen")
                         progressBar.visibility = View.GONE
                         Log.e("Test", "Sign-In Successful")
                     } else {

@@ -27,6 +27,7 @@ class ProductDetailsScreen(product :String) : Fragment() {
     private lateinit var tvProductDescription: TextView
     private lateinit var profileImage: ImageView
     private lateinit var tvProductStock: TextView
+    private lateinit var tvProductSize: TextView
     private var imageUrl = ""
 
     private lateinit var ivBack: ImageView
@@ -47,6 +48,7 @@ class ProductDetailsScreen(product :String) : Fragment() {
         tvProductDescription = view.findViewById(R.id.tvProductDescription)
         profileImage = view.findViewById(R.id.profileImage)
         tvProductStock = view.findViewById(R.id.tvProductStock)
+        tvProductSize = view.findViewById(R.id.tvProductSize)
 
         progressBar.visibility = View.VISIBLE
         getproductById(productId) { product ->
@@ -58,6 +60,7 @@ class ProductDetailsScreen(product :String) : Fragment() {
                 loadImageFromUrl(requireContext(),product.imageUrl,profileImage)
                 imageUrl = product.imageUrl
                 tvProductStock.setText(product.productStock.toString())
+                tvProductSize.setText(product.productSize)
                 progressBar.visibility = View.GONE
             } ?: run {
                 println("Getproduct - product not found")

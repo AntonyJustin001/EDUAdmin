@@ -294,7 +294,7 @@
                         android:layout_height="@dimen/_50sdp"
                         android:adjustViewBounds="true"
                         android:contentDescription="@null"
-                        android:src="@drawable/vd_teacher_icon" />
+                        android:src="@drawable/vd_notification" />
 
                     <TextView
                         android:id="@+id/tvTeachersCount"

@@ -20,6 +20,7 @@ fun loadScreen(activity: FragmentActivity, next: Fragment, key: String = "", val
     next.arguments = bundle
     val transaction = activity.supportFragmentManager.beginTransaction()
     transaction.replace(R.id.fragment_container, next)
+    if(!(key == "SignInScreen" || key == "SplashScreen"))
     transaction.addToBackStack(next.tag)
     transaction.commit()
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import tena.admin.app.R
 import tena.admin.app.models.Order
@@ -61,7 +62,6 @@ class OrderDetailsScreen(orderId:String) : Fragment() {
                 return@addSnapshotListener
             }
 
-
             if (snapshot != null && snapshot.exists()) {
 
                 val order = snapshot.toObject(Order::class.java)
@@ -72,7 +72,19 @@ class OrderDetailsScreen(orderId:String) : Fragment() {
                             requireContext(),
                             requireActivity(),
                             order
-                        )
+                        ) { status ->
+                            orderDetailRef.update("orderStatus", status)
+                                .addOnSuccessListener {
+                                    Snackbar.make(
+                                        requireView(),
+                                        "Order Status Updated Successfully",
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w("Firestore", "Error updating document", e)
+                                }
+                        }
                     } else {
                         Log.e("Firestore", "Order data is null")
                         //requireActivity().supportFragmentManager.popBackStack()

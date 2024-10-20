@@ -23,4 +23,12 @@
     <string name="error">Error</string>
     <string name="no_network_avilable">No Network Available Please Try Again Later</string>
 
+    <string-array name="order_status">
+        <item>Pending</item>
+        <item>Confirmed</item>
+        <item>Processing</item>
+        <item>Shipped</item>
+        <item>Canceled</item>
+    </string-array>
+
 </resources>

@@ -40,6 +40,7 @@ class ProductDetailAddEdit(product: String) : Fragment() {
     private lateinit var etproductDescription: EditText
     private lateinit var etPrice: EditText
     private lateinit var etProductStock: EditText
+    private lateinit var etProductSize: EditText
     private lateinit var btnStore: Button
     private lateinit var progressBar: LottieAnimationView
     private lateinit var ivproductPic: ImageView
@@ -66,48 +67,61 @@ class ProductDetailAddEdit(product: String) : Fragment() {
         etproductNameTitle = view.findViewById(R.id.etproductNameTitle)
         etproductDescription = view.findViewById(R.id.etProductDescription)
         etPrice = view.findViewById(R.id.etProductPrice)
+        etProductSize = view.findViewById(R.id.etProductSize)
         etProductStock = view.findViewById(R.id.etProductStock)
         btnStore = view.findViewById(R.id.btnSave)
         btnStore.setOnClickListener {
             if (etproductNameTitle.text.toString() != "") {
                 if (etproductDescription.text.toString() != "") {
                     if (etPrice.text.toString() != "") {
-                        if (imageUrl != "") {
-                            if (etProductStock.text.toString() != "") {
-                                progressBar.visibility = View.VISIBLE
-                                if (type == "Edit") {
-                                    val updatedDetails = hashMapOf(
-                                        "productTitle" to etproductNameTitle.text.toString(),
-                                        "productDescription" to etproductDescription.text.toString(),
-                                        "price" to etPrice.text.toString(),
-                                        "imageUrl" to imageUrl,
-                                    )
-                                    updateproductDetailsByName(productId, updatedDetails)
-                                } else {
+
+                        if (etProductSize.text.toString() != "") {
+                            if (imageUrl != "") {
+                                if (etProductStock.text.toString() != "") {
+                                    progressBar.visibility = View.VISIBLE
+                                    if (type == "Edit") {
+                                        val updatedDetails = hashMapOf(
+                                            "productTitle" to etproductNameTitle.text.toString(),
+                                            "productDescription" to etproductDescription.text.toString(),
+                                            "price" to etPrice.text.toString().toDouble(),
+                                            "imageUrl" to imageUrl,
+                                            "productStock" to etProductStock.text.toString().toInt(),
+                                            "productSize" to etProductSize.text.toString(),
+                                        )
+                                        updateproductDetailsByName(productId, updatedDetails)
+                                    } else {
                                         addproduct(
                                             Product(
                                                 id = UUID.randomUUID().toString(),
                                                 productTitle = etproductNameTitle.text.toString(),
                                                 productDescription = etproductDescription.text.toString(),
                                                 price = if (etPrice.text.toString() != "") etPrice.text.toString()
-                                                    .toInt() else 0,
+                                                    .toDouble() else 0.0,
                                                 imageUrl = imageUrl,
                                                 productStock = if (etProductStock.text.toString() != "") etProductStock.text.toString()
-                                                    .toInt() else 0
+                                                    .toInt() else 0,
+                                                productSize = etProductSize.text.toString()
                                             )
                                         )
+                                    }
+                                } else {
+                                    Snackbar.make(
+                                        requireView(),
+                                        "Please Enter product Stock",
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
                                 }
                             } else {
                                 Snackbar.make(
                                     requireView(),
-                                    "Please Enter product Stock",
+                                    "Please Select product Image",
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
                         } else {
                             Snackbar.make(
                                 requireView(),
-                                "Please Select product Image",
+                                "Please Enter product Size",
                                 Snackbar.LENGTH_LONG
                             ).show()
                         }
@@ -167,6 +181,7 @@ class ProductDetailAddEdit(product: String) : Fragment() {
                     loadImageFromUrl(requireContext(), product.imageUrl, ivproductPic)
                     imageUrl = product.imageUrl
                     etProductStock.setText(product.productStock.toString())
+                    etProductSize.setText(product.productSize)
                     progressBar.visibility = View.GONE
                 } ?: run {
                     println("Getproduct - product not found")
