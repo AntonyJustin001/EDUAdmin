@@ -41,7 +41,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:fontFamily="@font/jost_medium"
-            android:text="Customer Details"
+            android:text="Student Details"
             android:textColor="@color/black"
             android:textSize="@dimen/_16sdp"
             android:layout_centerVertical="true"

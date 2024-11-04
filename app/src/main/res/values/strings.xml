@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tena Admin App</string>
+    <string name="app_name">EDU Admin App</string>
     <string name="getting_started">Getting Started.!</string>
     <string name="lets_signIn">Let\'s Sign In.!</string>
     <string name="login_words">Login to Your Account to Continue your Courses...</string>

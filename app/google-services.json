@@ -1,22 +1,21 @@
 {
   "project_info": {
-    "project_number": "288742330869",
-    "firebase_url": "https://tenahealthcare-1e82e-default-rtdb.firebaseio.com",
-    "project_id": "tenahealthcare-1e82e",
-    "storage_bucket": "tenahealthcare-1e82e.appspot.com"
+    "project_number": "427200725147",
+    "project_id": "studentrecording-a8b13",
+    "storage_bucket": "studentrecording-a8b13.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:288742330869:android:d863884ca26d162684d0bc",
+        "mobilesdk_app_id": "1:427200725147:android:dd02cac5b5baba7df7c63e",
         "android_client_info": {
-          "package_name": "tena.admin.app"
+          "package_name": "com.edu.admin"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAO5hNyqla0JZaBcqAPir0FYfpzMNK1Cww"
+          "current_key": "AIzaSyDeBhsnoyTosKNcRE7EnB6EjpaTQa16DXU"
         }
       ],
       "services": {
@@ -27,15 +26,72 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:288742330869:android:de4a530b9843b2ce84d0bc",
+        "mobilesdk_app_id": "1:427200725147:android:f522c20b9db22650f7c63e",
         "android_client_info": {
-          "package_name": "tena.health.care"
+          "package_name": "com.edu.com"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAO5hNyqla0JZaBcqAPir0FYfpzMNK1Cww"
+          "current_key": "AIzaSyDeBhsnoyTosKNcRE7EnB6EjpaTQa16DXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427200725147:android:5fe2b7bf733e85f6f7c63e",
+        "android_client_info": {
+          "package_name": "com.screen.record"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeBhsnoyTosKNcRE7EnB6EjpaTQa16DXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427200725147:android:ecd55e37fafd014ff7c63e",
+        "android_client_info": {
+          "package_name": "com.student.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeBhsnoyTosKNcRE7EnB6EjpaTQa16DXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427200725147:android:55ab38a5318fc2c7f7c63e",
+        "android_client_info": {
+          "package_name": "school.admin.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeBhsnoyTosKNcRE7EnB6EjpaTQa16DXU"
         }
       ],
       "services": {

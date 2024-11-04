@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRecordHeading"
-        tools:listitem="@layout/product_card_layout" />
+        tools:listitem="@layout/subject_card_layout" />
 
     <TextView
         android:id="@+id/tvEmptyRecordedList"

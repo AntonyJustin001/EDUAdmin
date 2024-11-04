@@ -101,7 +101,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvStatusHeading">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvproducts"
+                android:id="@+id/cvSubjects"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_row="0"
@@ -114,7 +114,7 @@
                 app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
-                    android:id="@+id/llproductCard"
+                    android:id="@+id/llSubjectCard"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -124,16 +124,16 @@
                     android:paddingVertical="@dimen/_5sdp">
 
                     <ImageView
-                        android:id="@+id/ivproduct"
+                        android:id="@+id/ivSubject"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
                         android:adjustViewBounds="true"
                         android:contentDescription="@null"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:src="@drawable/vd_product" />
+                        android:src="@drawable/vd_subject" />
 
                     <TextView
-                        android:id="@+id/tvProductsCount"
+                        android:id="@+id/tvSubjectsCount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="@dimen/_5sdp"
@@ -148,7 +148,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/jost_medium"
-                        android:text="Products"
+                        android:text="Subjects"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -258,7 +258,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/jost_medium"
-                        android:text="Customers"
+                        android:text="Students"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="16sp" />

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "tena.admin.app"
+    namespace = "com.edu.admin"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "tena.admin.app"
+        applicationId = "com.edu.admin"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

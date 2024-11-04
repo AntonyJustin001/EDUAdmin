@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="tena.admin.app.screens.home.HomeScreen"
+        android:name="com.edu.admin.screens.home.HomeScreen"
         android:label="Home" />
     <fragment
         android:id="@+id/nav_profile"
