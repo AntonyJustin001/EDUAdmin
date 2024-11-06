@@ -72,23 +72,31 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
         btnStore.setOnClickListener {
             if (etSubjectNameTitle.text.toString() != "") {
                 if (etSubjectDescription.text.toString() != "") {
-
-                    progressBar.visibility = View.VISIBLE
-                    if (type == "Edit") {
-                        val updatedDetails = hashMapOf(
-                            "subjectName" to etSubjectNameTitle.text.toString(),
-                            "subjectDescription" to etSubjectDescription.text.toString(),
-                        )
-                        updateSubjectDetailsByName(SubjectId, updatedDetails)
-                    } else {
-                        addSubject(
-                            Subject(
-                                subjectId = UUID.randomUUID().toString(),
-                                subjectName = etSubjectNameTitle.text.toString(),
-                                subjectDescription = etSubjectDescription.text.toString(),
-                                subjectImageUrl = imageUrl,
+                    if (imageUrl != "") {
+                        progressBar.visibility = View.VISIBLE
+                        if (type == "Edit") {
+                            val updatedDetails = hashMapOf(
+                                "subjectTitle" to etSubjectNameTitle.text.toString(),
+                                "subjectDescription" to etSubjectDescription.text.toString(),
+                                "imageUrl" to imageUrl,
                             )
-                        )
+                            updateSubjectDetailsByName(SubjectId, updatedDetails)
+                        } else {
+                            addSubject(
+                                Subject(
+                                    id = UUID.randomUUID().toString(),
+                                    subjectTitle = etSubjectNameTitle.text.toString(),
+                                    subjectDescription = etSubjectDescription.text.toString(),
+                                    imageUrl = imageUrl
+                                )
+                            )
+                        }
+                    } else {
+                        Snackbar.make(
+                            requireView(),
+                            "Please Pick Subject Image",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 } else {
                     Snackbar.make(
@@ -111,7 +119,7 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
         tvAddEditSubjectHeading = view.findViewById(R.id.tvAddEditSubjectHeading)
         ivSubjectPic = view.findViewById(R.id.ivSubjectPic)
         ivSubjectPic.setOnClickListener {
-            //openFileChooser()
+            openFileChooser()
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -133,11 +141,11 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
             getSubjectByName(SubjectId) { Subject ->
                 Subject?.let {
                     println("GetSubject - Subject found: $Subject")
-                    etSubjectNameTitle.setText(Subject.subjectName)
+                    etSubjectNameTitle.setText(Subject.subjectTitle)
                     etSubjectDescription.setText(Subject.subjectDescription)
                     //etPrice.setText(Subject.price.toString())
-                    loadImageFromUrl(requireContext(), Subject.subjectImageUrl, ivSubjectPic)
-                    imageUrl = Subject.subjectImageUrl
+                    loadImageFromUrl(requireContext(), Subject.imageUrl, ivSubjectPic)
+                    imageUrl = Subject.imageUrl
                     //etSubjectStock.setText(Subject.SubjectStock.toString())
                     //etSubjectSize.setText(Subject.SubjectSize)
                     progressBar.visibility = View.GONE
@@ -155,7 +163,7 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
     fun addSubject(Subject: Subject) {
         val db = FirebaseFirestore.getInstance()
         db.collection("subjects")
-            .document(Subject.subjectId)
+            .document(Subject.id)
             .set(Subject)
             .addOnSuccessListener {
                 Snackbar.make(requireView(), "Subject Added Successfully", Snackbar.LENGTH_LONG)
@@ -204,7 +212,7 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri? = data.data
             if (imageUri != null) {
-                //uploadImageToFirebase(imageUri)
+                uploadImageToFirebase(imageUri)
             }
         }
     }
@@ -245,7 +253,7 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
         val db = FirebaseFirestore.getInstance()
         progressBar.visibility = View.VISIBLE
         db.collection("subjects")
-            .whereEqualTo("subjectId", SubjectId) // Query where name matches
+            .whereEqualTo("id", SubjectId) // Query where name matches
             .get()
             .addOnSuccessListener { documents ->
                 if (documents != null && !documents.isEmpty) {

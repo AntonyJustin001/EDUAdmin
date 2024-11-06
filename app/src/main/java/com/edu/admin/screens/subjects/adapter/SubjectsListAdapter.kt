@@ -45,17 +45,17 @@ class SubjectsListAdapter(val context: Context, val activity: FragmentActivity, 
         private val subjectHolder: MaterialCardView = itemView.findViewById(R.id.subjectHolder)
 
         fun bind(subject: Subject) {
-            loadImageFromUrl(context,subject.subjectImageUrl,subjectProfile)
-            subjectTitle.text = subject.subjectName
+            loadImageFromUrl(context,subject.imageUrl,subjectProfile)
+            subjectTitle.text = subject.subjectTitle
             subjectDescription.text = subject.subjectDescription
             subjectDelete.setOnClickListener {
                 deleteJobDialog(subject)
             }
             subjectEdit.setOnClickListener {
-                loadScreen(activity, SubjectDetailAddEdit(subject.subjectId),"Type","Edit")
+                loadScreen(activity, SubjectDetailAddEdit(subject.id),"Type","Edit")
             }
             subjectHolder.setOnClickListener {
-                loadScreen(activity, SubjectDetailsScreen(subject.subjectId))
+                loadScreen(activity, SubjectDetailsScreen(subject))
             }
         }
 

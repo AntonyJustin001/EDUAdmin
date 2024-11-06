@@ -128,8 +128,8 @@ class SubjectListScreen : Fragment(),SubjectDeleteBottomSheet.OnButtonClickListe
         val subjectsRef = db.collection("subjects")
 
         // Simple search based on exact match
-        subjectsRef.whereGreaterThanOrEqualTo("subjectName", searchWord)
-            .whereLessThanOrEqualTo("subjectName", searchWord + '\uf8ff')
+        subjectsRef.whereGreaterThanOrEqualTo("subjectTitle", searchWord)
+            .whereLessThanOrEqualTo("subjectTitle", searchWord + '\uf8ff')
             .get()
             .addOnSuccessListener { documents ->
                 val subjects = mutableListOf<Subject>()
@@ -153,7 +153,7 @@ class SubjectListScreen : Fragment(),SubjectDeleteBottomSheet.OnButtonClickListe
 
         val db = FirebaseFirestore.getInstance()
         db.collection(collectionName)
-            .whereEqualTo("subjectId", subjectId)
+            .whereEqualTo("id", subjectId)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -199,7 +199,7 @@ class SubjectListScreen : Fragment(),SubjectDeleteBottomSheet.OnButtonClickListe
     }
 
     override fun onButtonClicked(subject : Subject) {
-        deletesubject(subject.subjectId)
+        deletesubject(subject.id)
     }
 
 }

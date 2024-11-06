@@ -20,11 +20,19 @@ import com.edu.admin.R
 import com.edu.admin.models.Lesson
 import com.edu.admin.utils.loadImageFromUrl
 import com.edu.admin.models.Subject
+import com.edu.admin.screens.lessons.LessonDeleteBottomSheet
+import com.edu.admin.screens.lessons.adapter.LessonsListAdapter
 import com.edu.admin.screens.subjects.adapter.SubjectsListAdapter
 import com.edu.admin.utils.loadScreen
 
-class SubjectDetailsScreen(subjectId:String) : Fragment(),
-    SubjectDeleteBottomSheet.OnButtonClickListener {
+class SubjectDetailsScreen(subject : Subject) : Fragment(),
+    LessonDeleteBottomSheet.OnButtonClickListener {
+
+    private var subject:Subject
+
+    init {
+        this.subject = subject
+    }
 
     private lateinit var rcLessons: RecyclerView
     private lateinit var tvEmptyLessonList: TextView
@@ -54,7 +62,7 @@ class SubjectDetailsScreen(subjectId:String) : Fragment(),
             parentFragmentManager.popBackStack()
         }
 
-        ivAddLesson = view.findViewById(R.id.ivAddsubject)
+        ivAddLesson = view.findViewById(R.id.ivAddlesson)
         ivAddLesson.setOnClickListener {
             loadScreen(requireActivity(), SubjectDetailAddEdit(""),"Type","Add")
         }
@@ -122,25 +130,23 @@ class SubjectDetailsScreen(subjectId:String) : Fragment(),
 
     fun loadlessonList() {
         Log.e("Test","LoadsubjectList Called()")
-        getAllLessons("") { subjects ->
-            subjects.forEach {
-                Log.e("subjects","subject - $it")
+        getAllLessons("") { lessons ->
+            lessons.forEach {
+                Log.e("lessons","lesson - $it")
             }
-
-            if(subjects.size>0) {
+            if(lessons.size>0) {
                 tvEmptyLessonList.visibility = View.GONE
                 rcLessons.visibility = View.VISIBLE
                 rcLessons.layoutManager = LinearLayoutManager(context)
-                rcLessons.adapter = SubjectsListAdapter(requireContext(),requireActivity(),parentFragmentManager,fragment, subjects)
+                rcLessons.adapter = LessonsListAdapter(requireContext(),requireActivity(),parentFragmentManager,fragment, subject, lessons)
             } else {
                 tvEmptyLessonList.visibility = View.VISIBLE
                 rcLessons.visibility = View.GONE
             }
-
         }
     }
 
-    override fun onButtonClicked(subject : Subject) {
-        deleteLesson(subject.id)
+    override fun onButtonClicked(subjectId : String, lessonId: String) {
+        deleteLesson(subjectId,lessonId)
     }
 }

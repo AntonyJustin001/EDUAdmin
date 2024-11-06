@@ -1,7 +1,7 @@
 package com.edu.admin.models
 
 data class Lesson(
-    val lessonId: String = "",
+    val id: String = "",
     val lessonTitle: String = "",
     val lessonDescription: String = "",
     val isCompleted:Boolean = false,

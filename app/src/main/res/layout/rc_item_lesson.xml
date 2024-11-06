@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cvSubject"
+    android:id="@+id/lessonHolder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/_7sdp"
@@ -17,7 +18,7 @@
         android:padding="@dimen/_5sdp">
 
         <TextView
-            android:id="@+id/tvSubjectName"
+            android:id="@+id/tvLessonName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_7sdp"
@@ -31,14 +32,14 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Krish Parekh" />
 
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginVertical="@dimen/_5sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@+id/tvSubjectName">
+            app:layout_constraintTop_toBottomOf="@+id/tvLessonName">
 
             <LinearLayout
                 android:id="@+id/layoutTheoryViewer"
@@ -103,7 +104,7 @@
                 android:background="@drawable/bg_rounded_darkgreen"
                 android:gravity="center">
                 <ImageView
-                    android:id="@+id/ivDeleteSubject"
+                    android:id="@+id/ivDeleteLesson"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_margin="@dimen/_5sdp"
@@ -111,7 +112,7 @@
                     android:src="@drawable/ic_delete_icon"
                     />
             </LinearLayout>
-            
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
