@@ -28,13 +28,13 @@ import com.edu.admin.R
 import com.edu.admin.models.Lesson
 import com.edu.admin.models.Subject
 import com.edu.admin.models.Theories
-import com.edu.admin.utils.loadImageFromUrl
-import com.edu.admin.utils.loadScreen
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import java.util.UUID
 
 class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
@@ -107,9 +107,16 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
     }
 
     private fun openFileChooser() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "docs/*"
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "*/*" // Accept all file types initially
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
+                "application/pdf", // PDF
+                "application/msword", // DOC
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // DOCX
+            ))
+            addCategory(Intent.CATEGORY_OPENABLE) // Ensure only openable files are shown
+        }
+        startActivityForResult(Intent.createChooser(intent, "Select a document"), PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -124,9 +131,20 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
 
     private fun uploadDocumentsToFirebase(docsUri: Uri) {
         progressBar.visibility = View.VISIBLE
+        docName = getReadableFileName(docsUri)?:"DocumentFile"
+        // Split the file name into name and extension
+        val dotIndex = docName.lastIndexOf(".")
+        docName = if (dotIndex != -1) {
+            val name = docName.substring(0, dotIndex) // Name before the dot
+            val extension = docName.substring(dotIndex) // Extension including the dot
+            "$name${System.currentTimeMillis()}$extension" // Add timestamp between name and extension
+        } else {
+            "$docName${System.currentTimeMillis()}" // If no extension, just append the timestamp
+        }
+
         val storageReference = FirebaseStorage.getInstance().reference
         val fileReference =
-            storageReference.child("Theories/" + System.currentTimeMillis() + ".docs")
+            storageReference.child("Theories/" + docName)
 
         val uploadTask = fileReference.putFile(docsUri)
 
@@ -142,7 +160,7 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
                 addTheory(
                     Theories(
                         theoriesId = UUID.randomUUID().toString(),
-                        theoriesTitle = "Theories",
+                        theoriesTitle = docName,
                         theoriesUrl = docsUrl)
                 )
                 Log.d("Firebase Storage", "Image URL: $downloadUrl")
@@ -159,14 +177,19 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
         }
     }
 
+    fun getReadableFileName(uri: Uri): String? {
+        val decodedPath = URLDecoder.decode(uri.lastPathSegment ?: "", StandardCharsets.UTF_8.name())
+        return decodedPath.substringAfterLast("/") // Extract only the file name
+    }
+
     fun getAllTheories(subject: Subject, lesson: Lesson, onTheoriesRetrieved: (List<Theories>) -> Unit) {
         try {
             progressBar.visibility = View.VISIBLE
             val db = FirebaseFirestore.getInstance()
             val TheoriesRef = db
-                .collection("Subjects").document(subject.id)
-                .collection("Lessons").document(lesson.id)
-                .collection("Theories")
+                .collection("subjects").document(subject.id)
+                .collection("lessons").document(lesson.id)
+                .collection("theories")
             TheoriesRef
                 .get()
                 .addOnSuccessListener { result ->
@@ -272,16 +295,16 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
 
     fun addTheory(theory: Theories) {
         val db = FirebaseFirestore.getInstance()
-        db.collection("Subjects").document(subject.id)
-            .collection("Lessons").document(lesson.id)
-            .collection("Theories")
+        db.collection("subjects").document(subject.id)
+            .collection("lessons").document(lesson.id)
+            .collection("theories")
             .document(theory.theoriesId)
             .set(theory)
             .addOnSuccessListener {
                 Snackbar.make(requireView(), "Theory Added Successfully", Snackbar.LENGTH_LONG)
                     .show()
                 progressBar.visibility = View.GONE
-                parentFragmentManager.popBackStack()
+                loadTheoriesList(subject, lesson)
             }
             .addOnFailureListener { e ->
                 Snackbar.make(
@@ -290,7 +313,6 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
                     Snackbar.LENGTH_LONG
                 ).show()
                 progressBar.visibility = View.GONE
-                parentFragmentManager.popBackStack()
             }
     }
 }

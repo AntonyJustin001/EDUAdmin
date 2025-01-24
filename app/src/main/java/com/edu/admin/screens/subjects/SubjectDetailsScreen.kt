@@ -19,6 +19,8 @@ import com.edu.admin.R
 import com.edu.admin.models.Lesson
 import com.edu.admin.models.Subject
 import com.edu.admin.screens.lessons.LessonDeleteBottomSheet
+import com.edu.admin.screens.lessons.LessonDetailAddEdit
+import com.edu.admin.screens.lessons.TheoriesListScreen
 import com.edu.admin.utils.loadScreen
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
@@ -63,7 +65,7 @@ class SubjectDetailsScreen(subject: Subject) : Fragment(),
 
         ivAddLesson = view.findViewById(R.id.ivAddlesson)
         ivAddLesson.setOnClickListener {
-            loadScreen(requireActivity(), SubjectDetailAddEdit(""), "Type", "Add")
+            loadScreen(requireActivity(), LessonDetailAddEdit(subject.id, ""), "Type", "Add")
         }
         loadlessonList()
     }
@@ -77,7 +79,8 @@ class SubjectDetailsScreen(subject: Subject) : Fragment(),
         try {
             progressBar.visibility = View.VISIBLE
             val db = FirebaseFirestore.getInstance()
-            val lessonRef = db.collection("subjects").document(subjectId)
+            val lessonRef = db.collection("subjects")
+                .document(subjectId)
                 .collection("lessons")
             lessonRef
                 .get()
@@ -153,7 +156,7 @@ class SubjectDetailsScreen(subject: Subject) : Fragment(),
 
     fun loadlessonList() {
         Log.e("Test", "LoadsubjectList Called()")
-        getAllLessons("") { lessons ->
+        getAllLessons(subject.id) { lessons ->
             lessons.forEach {
                 Log.e("lessons", "lesson - $it")
             }
@@ -210,7 +213,7 @@ class LessonsListAdapter(val context: Context, val activity: FragmentActivity, v
 
             tvLessonName.text = lesson.lessonTitle
             layoutTheoryViewer.setOnClickListener {
-                //loadScreen(activity, SubjectDetailAddEdit(subject.subjectId),"Type","Edit")
+                loadScreen(activity, TheoriesListScreen(subject, lesson))
             }
             layoutVideoPlayer.setOnClickListener {
 

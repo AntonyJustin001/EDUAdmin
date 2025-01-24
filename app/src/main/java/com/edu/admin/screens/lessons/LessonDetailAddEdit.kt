@@ -17,12 +17,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
 
-class LessonDetailAddEdit(Lesson: String) : Fragment() {
+class LessonDetailAddEdit(subjectId: String, lessonId: String) : Fragment() {
 
-    private var LessonId: String
+    private var subjectId: String
+    private var lessonId: String
 
     init {
-        this.LessonId = Lesson
+        this.subjectId = subjectId
+        this.lessonId = lessonId
     }
 
     private lateinit var etLessonNameTitle: EditText
@@ -61,16 +63,17 @@ class LessonDetailAddEdit(Lesson: String) : Fragment() {
         btnStore.setOnClickListener {
             if (etLessonNameTitle.text.toString() != "") {
                 if (etLessonDescription.text.toString() != "") {
-                    if (imageUrl != "") {
+
                         progressBar.visibility = View.VISIBLE
                         if (type == "Edit") {
                             val updatedDetails = hashMapOf(
                                 "LessonTitle" to etLessonNameTitle.text.toString(),
                                 "LessonDescription" to etLessonDescription.text.toString(),
                             )
-                            updateLessonDetailsByName(LessonId, updatedDetails)
+                            updateLessonDetailsByName(lessonId, updatedDetails)
                         } else {
                             addLesson(
+                                subjectId,
                                 Lesson(
                                     id = UUID.randomUUID().toString(),
                                     lessonTitle = etLessonNameTitle.text.toString(),
@@ -78,13 +81,6 @@ class LessonDetailAddEdit(Lesson: String) : Fragment() {
                                 )
                             )
                         }
-                    } else {
-                        Snackbar.make(
-                            requireView(),
-                            "Please Pick Lesson Image",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
                 } else {
                     Snackbar.make(
                         requireView(),
@@ -108,7 +104,7 @@ class LessonDetailAddEdit(Lesson: String) : Fragment() {
         if (type == "Edit") {
             tvAddEditLessonHeading.text = "Edit Lesson"
             progressBar.visibility = View.VISIBLE
-            getLessonByName(LessonId) { Lesson ->
+            getLessonByName(lessonId) { Lesson ->
                 Lesson?.let {
                     println("GetLesson - Lesson found: $Lesson")
                     etLessonNameTitle.setText(Lesson.lessonTitle)
@@ -125,9 +121,12 @@ class LessonDetailAddEdit(Lesson: String) : Fragment() {
 
     }
 
-    fun addLesson(Lesson: Lesson) {
+    fun addLesson(subjectId: String, Lesson: Lesson) {
         val db = FirebaseFirestore.getInstance()
-        db.collection("Lessons")
+
+        db.collection("subjects")
+            .document(subjectId)
+            .collection("lessons")
             .document(Lesson.id)
             .set(Lesson)
             .addOnSuccessListener {
