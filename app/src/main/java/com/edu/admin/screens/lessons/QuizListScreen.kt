@@ -24,6 +24,8 @@ import com.edu.admin.R
 import com.edu.admin.models.Lesson
 import com.edu.admin.models.Quiz
 import com.edu.admin.models.Subject
+import com.edu.admin.screens.subjects.SubjectDetailAddEdit
+import com.edu.admin.utils.loadScreen
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
@@ -46,10 +48,6 @@ class QuizListScreen(subject: Subject, lesson: Lesson) : Fragment(),
     private lateinit var ivBack: ImageView
     private lateinit var ivAddQuiz: ImageView
     private lateinit var progressBar: LottieAnimationView
-
-    private val PICK_IMAGE_REQUEST = 1
-    private var QuizUrl = ""
-    private var QuizName = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +72,7 @@ class QuizListScreen(subject: Subject, lesson: Lesson) : Fragment(),
 
         ivAddQuiz = view.findViewById(R.id.ivAddQuiz)
         ivAddQuiz.setOnClickListener {
-
+            loadScreen(requireActivity(), QuizAddEdit(subject, lesson, ""),"Type","Add")
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -103,9 +101,9 @@ class QuizListScreen(subject: Subject, lesson: Lesson) : Fragment(),
             progressBar.visibility = View.VISIBLE
             val db = FirebaseFirestore.getInstance()
             val QuizRef = db
-                .collection("Subjects").document(subject.id)
-                .collection("Lessons").document(lesson.id)
-                .collection("Quiz")
+                .collection("subjects").document(subject.id)
+                .collection("lessons").document(lesson.id)
+                .collection("quiz")
             QuizRef
                 .get()
                 .addOnSuccessListener { result ->
@@ -211,9 +209,9 @@ class QuizListScreen(subject: Subject, lesson: Lesson) : Fragment(),
 
     fun addQuiz(Quiz: Quiz) {
         val db = FirebaseFirestore.getInstance()
-        db.collection("Subjects").document(subject.id)
-            .collection("Lessons").document(lesson.id)
-            .collection("Quiz")
+        db.collection("subjects").document(subject.id)
+            .collection("lessons").document(lesson.id)
+            .collection("quiz")
             .document(Quiz.id)
             .set(Quiz)
             .addOnSuccessListener {

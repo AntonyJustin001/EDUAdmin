@@ -16,17 +16,23 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
 import com.edu.admin.R
+import com.edu.admin.models.Lesson
 import com.edu.admin.models.Quiz
+import com.edu.admin.models.Subject
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
 
-class QuizAddEdit(quizId: String) : Fragment() {
+class QuizAddEdit(subject: Subject, lesson: Lesson, quizId: String) : Fragment() {
 
     private var quizId: String
+    private var subject: Subject
+    private var lesson: Lesson
 
     init {
         this.quizId = quizId
+        this.subject = subject
+        this.lesson = lesson
     }
 
     private lateinit var etQuestion: EditText
@@ -77,6 +83,8 @@ class QuizAddEdit(quizId: String) : Fragment() {
                                     updateQuizDetailsByName(quizId, updatedDetails)
                                 } else {
                                     addQuiz(
+                                        subject,
+                                        lesson,
                                         Quiz(
                                             id = UUID.randomUUID().toString(),
                                             question = etQuestion.text.toString(),
@@ -163,9 +171,12 @@ class QuizAddEdit(quizId: String) : Fragment() {
 
     }
 
-    fun addQuiz(quiz: Quiz) {
+    fun addQuiz(subject: Subject, lesson: Lesson, quiz: Quiz) {
         val db = FirebaseFirestore.getInstance()
-        db.collection("Quizes")
+
+        db.collection("subjects").document(subject.id)
+            .collection("lessons").document(lesson.id)
+            .collection("quiz")
             .document(quiz.id)
             .set(quiz)
             .addOnSuccessListener {
@@ -186,8 +197,11 @@ class QuizAddEdit(quizId: String) : Fragment() {
     }
 
     fun getQuizByName(QuizId: String, onQuizRetrieved: (Quiz?) -> Unit) {
+
         val db = FirebaseFirestore.getInstance()
-        db.collection("Quizes")
+        db.collection("subjects").document(subject.id)
+            .collection("lessons").document(lesson.id)
+            .collection("quiz")
             .document(QuizId)
             .get()
             .addOnSuccessListener { document ->

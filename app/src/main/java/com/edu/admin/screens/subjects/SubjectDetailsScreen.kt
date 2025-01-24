@@ -20,7 +20,9 @@ import com.edu.admin.models.Lesson
 import com.edu.admin.models.Subject
 import com.edu.admin.screens.lessons.LessonDeleteBottomSheet
 import com.edu.admin.screens.lessons.LessonDetailAddEdit
+import com.edu.admin.screens.lessons.QuizListScreen
 import com.edu.admin.screens.lessons.TheoriesListScreen
+import com.edu.admin.screens.lessons.VideosListScreen
 import com.edu.admin.utils.loadScreen
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
@@ -216,10 +218,10 @@ class LessonsListAdapter(val context: Context, val activity: FragmentActivity, v
                 loadScreen(activity, TheoriesListScreen(subject, lesson))
             }
             layoutVideoPlayer.setOnClickListener {
-
+                loadScreen(activity, VideosListScreen(subject, lesson))
             }
             layoutQuiz.setOnClickListener {
-
+                loadScreen(activity, QuizListScreen(subject, lesson))
             }
             layoutDelete.setOnClickListener {
                 deleteLessonDialog(subject.id,lesson.id)
