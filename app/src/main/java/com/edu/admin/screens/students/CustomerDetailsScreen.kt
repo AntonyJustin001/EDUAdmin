@@ -1,4 +1,4 @@
-package com.edu.admin.screens.customers
+package com.edu.admin.screens.students
 
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.edu.admin.R
-import com.edu.admin.models.Customer
-import com.edu.admin.screens.customers.adapter.CustomerDetailsAdapter
+import com.edu.admin.models.Student
+import com.edu.admin.screens.students.adapter.CustomerDetailsAdapter
 
 class CustomerDetailsScreen(customerId:String) : Fragment() {
 
@@ -61,7 +61,7 @@ class CustomerDetailsScreen(customerId:String) : Fragment() {
 
             if (snapshot != null && snapshot.exists()) {
 
-                val customer = snapshot.toObject(Customer::class.java)
+                val customer = snapshot.toObject(Student::class.java)
                 Log.e("Firestore", "customer Details - $customer")
                 if(isAdded) {
                     if(customer != null){

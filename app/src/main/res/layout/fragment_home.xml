@@ -214,7 +214,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvCustomers"
+                android:id="@+id/cvStudents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_row="1"
@@ -244,7 +244,7 @@
                         android:src="@drawable/ic_person" />
 
                     <TextView
-                        android:id="@+id/tvCustomersCount"
+                        android:id="@+id/tvStudentsCount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="@dimen/_5sdp"

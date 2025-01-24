@@ -13,9 +13,9 @@ import com.edu.admin.R
 import com.edu.admin.models.Order
 import com.edu.admin.models.Product
 import com.edu.admin.models.User
-import com.edu.admin.screens.customers.CustomersListScreen
 import com.edu.admin.screens.notification.NotificationCreate
 import com.edu.admin.screens.orders.OrdersListScreen
+import com.edu.admin.screens.students.StudentListScreen
 import com.edu.admin.screens.subjects.SubjectListScreen
 import com.edu.admin.utils.loadScreen
 
@@ -23,11 +23,11 @@ class HomeScreen : Fragment() {
 
     private lateinit var cvSubjects: MaterialCardView
     private lateinit var cvOrders: MaterialCardView
-    private lateinit var cvCustomers: MaterialCardView
+    private lateinit var cvStudents: MaterialCardView
     private lateinit var cvTeachers: MaterialCardView
 
     private lateinit var tvSubjectsCount: TextView
-    private lateinit var tvCustomersCount: TextView
+    private lateinit var tvStudentsCount: TextView
     private lateinit var tvOrderCount: TextView
     private lateinit var tvNotificationCount: TextView
 
@@ -44,10 +44,10 @@ class HomeScreen : Fragment() {
 
         cvSubjects = view.findViewById(R.id.cvSubjects)
         cvOrders = view.findViewById(R.id.cvOrders)
-        cvCustomers = view.findViewById(R.id.cvCustomers)
+        cvStudents = view.findViewById(R.id.cvStudents)
         tvSubjectsCount = view.findViewById(R.id.tvSubjectsCount)
         tvOrderCount = view.findViewById(R.id.tvOrderCount)
-        tvCustomersCount = view.findViewById(R.id.tvCustomersCount)
+        tvStudentsCount = view.findViewById(R.id.tvStudentsCount)
         tvNotificationCount = view.findViewById(R.id.tvTeachersCount)
         cvTeachers =  view.findViewById(R.id.cvTeachers)
 
@@ -57,8 +57,8 @@ class HomeScreen : Fragment() {
         cvOrders.setOnClickListener {
             loadScreen(requireActivity(), OrdersListScreen())
         }
-        cvCustomers.setOnClickListener {
-            loadScreen(requireActivity(),CustomersListScreen())
+        cvStudents.setOnClickListener {
+            loadScreen(requireActivity(), StudentListScreen())
         }
         cvTeachers.setOnClickListener {
             loadScreen(requireActivity(), NotificationCreate())
@@ -78,11 +78,11 @@ class HomeScreen : Fragment() {
             tvOrderCount.text = "${orders.size}"
         }
 
-        getAllCustomers { customers ->
-            customers.forEach {
-                Log.e("customers","customer - $it")
+        getAllStudents { Students ->
+            Students.forEach {
+                Log.e("Students","customer - $it")
             }
-            tvCustomersCount.text = "${customers.size}"
+            tvStudentsCount.text = "${Students.size}"
         }
 
     }
@@ -123,7 +123,7 @@ class HomeScreen : Fragment() {
             }
     }
 
-    fun getAllCustomers(onProductsRetrieved: (List<User>) -> Unit) {
+    fun getAllStudents(onProductsRetrieved: (List<User>) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("user")
             .get()

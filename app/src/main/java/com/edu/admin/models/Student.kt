@@ -1,11 +1,9 @@
-package com.health.care.models
+package com.edu.admin.models
 
 data class Student(
+    val userId: String = "",
     val name: String = "",
-    val section: String = "",
     val emailId: String = "",
     val mobileNo: String = "",
-    val DOB: String = "",
-    val address: String = "",
-    val profilePic: String = ""
+    val pointsEarned: String = "",
 )

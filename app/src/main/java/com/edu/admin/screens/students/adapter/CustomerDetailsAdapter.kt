@@ -1,4 +1,4 @@
-package com.edu.admin.screens.customers.adapter
+package com.edu.admin.screens.students.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.edu.admin.R
-import com.edu.admin.models.Customer
+import com.edu.admin.models.Student
 
-class CustomerDetailsAdapter(context: Context, activity:FragmentActivity /*,checkOutScreen:CheckOutScreen*/ , customer: Customer) :
+class CustomerDetailsAdapter(context: Context, activity:FragmentActivity /*,checkOutScreen:CheckOutScreen*/ , customer: Student) :
     RecyclerView.Adapter<CustomerDetailsAdapter.ItemViewHolder>() {
 
     var context: Context
     var activity: FragmentActivity
-    var customer: Customer
+    var customer: Student
 
     init {
 
@@ -42,7 +42,7 @@ class CustomerDetailsAdapter(context: Context, activity:FragmentActivity /*,chec
         private val tvCustomerMobile: TextView = itemView.findViewById(R.id.tvCustomerMobile)
         //private val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
 
-        fun bind(customer: Customer) {
+        fun bind(customer: Student) {
             tvCustomerName.text = customer.name
             tvCustomerMail.text = customer.emailId
             tvCustomerMobile.text = customer.mobileNo
