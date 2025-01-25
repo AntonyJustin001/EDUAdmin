@@ -15,22 +15,22 @@ import com.edu.admin.R
 import com.edu.admin.models.Student
 import com.google.firebase.firestore.FirebaseFirestore
 
-class StudentDetailsScreen(StudentId:String) : Fragment() {
+class StudentDetailsScreen(studentId:String) : Fragment() {
 
     private lateinit var backBtnHolder: LinearLayout
     lateinit var db: FirebaseFirestore
     private lateinit var progressBar: LottieAnimationView
-    private var StudentId = ""
+    private var studentId = ""
     private lateinit var ivBack: ImageView
     private lateinit var tvStudentName: TextView
     private lateinit var tvStudentMobile: TextView
     private lateinit var tvStudentMail: TextView
     private lateinit var tvTotalPoints: TextView
-    private lateinit var tvNoOfAttempts: TextView
+    //private lateinit var tvNoOfAttempts: TextView
     private lateinit var tvCompletedLevel: TextView
 
     init {
-        this.StudentId = StudentId
+        this.studentId = studentId
     }
 
     override fun onAttach(context: Context) {
@@ -58,11 +58,11 @@ class StudentDetailsScreen(StudentId:String) : Fragment() {
         tvStudentMobile = view.findViewById(R.id.tvStudentMobile)
         tvStudentMail = view.findViewById(R.id.tvStudentMail)
         tvTotalPoints = view.findViewById(R.id.tvTotalPoints)
-        tvNoOfAttempts = view.findViewById(R.id.tvNoOfAttempts)
+        //tvNoOfAttempts = view.findViewById(R.id.tvNoOfAttempts)
         tvCompletedLevel = view.findViewById(R.id.tvCompletedLevel)
 
 
-        val StudentDetailRef = db.collection("user").document(StudentId)
+        val StudentDetailRef = db.collection("student").document(studentId)
         StudentDetailRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("Firestore", "Listen failed.", e)
@@ -79,9 +79,11 @@ class StudentDetailsScreen(StudentId:String) : Fragment() {
                         tvStudentName.setText(student.name)
                         tvStudentMobile.setText(student.mobileNo)
                         tvStudentMail.setText(student.emailId)
-                        tvTotalPoints.setText(student.pointsEarned)
-                        tvNoOfAttempts.setText(student.noOfAttempts)
-                        tvCompletedLevel.setText(student.completedLevel)
+                        tvTotalPoints.setText("${student.pointsEarned}")
+                        val rawData = student.completedHistory
+                        val histories = rawData.split("-").filter { it.isNotBlank() }
+                        val formattedHistories = histories.joinToString("\n") { it.trim() }
+                        tvCompletedLevel.setText(formattedHistories)
                     } else {
                         Log.e("Firestore", "Student data is null")
                         //requireActivity().supportFragmentManager.popBackStack()

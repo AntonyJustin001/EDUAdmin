@@ -21,7 +21,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.edu.admin.R
 import com.edu.admin.models.Student
+import com.edu.admin.screens.subjects.SubjectDetailAddEdit
+import com.edu.admin.utils.loadScreen
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -29,7 +32,6 @@ class StudentListScreen : Fragment(), StudentDeleteBottomSheet.OnButtonClickList
 
     private lateinit var rcStudents: RecyclerView
     private lateinit var tvEmptyStudentList: TextView
-    private lateinit var etSearch: EditText
     private lateinit var fragment: Fragment
     private lateinit var ivBack: ImageView
     private lateinit var progressBar: LottieAnimationView
@@ -45,7 +47,6 @@ class StudentListScreen : Fragment(), StudentDeleteBottomSheet.OnButtonClickList
         super.onViewCreated(view, savedInstanceState)
 
         progressBar = view.findViewById(R.id.progressBar)
-        etSearch = view.findViewById(R.id.etSearch)
         rcStudents = view.findViewById(R.id.rvStudent)
         tvEmptyStudentList = view.findViewById(R.id.tvEmptyStudentList)
         fragment = this
@@ -57,43 +58,6 @@ class StudentListScreen : Fragment(), StudentDeleteBottomSheet.OnButtonClickList
         }
 
         loadStudentList()
-
-
-        etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // This method is called before the text is changed
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // This method is called when the text is being changed
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                try {
-                    // This method is called after the text has been changed
-                    s?.let {
-                        val words = it.split(" ")
-                        val lastWord = if (words.isNotEmpty()) words.last() else ""
-                        Log.e("Test","lastWord - $lastWord")
-                        searchStudents(lastWord) { searchedStudents ->
-                            if(searchedStudents.size>0) {
-                                tvEmptyStudentList.visibility = View.GONE
-                                rcStudents.visibility = View.VISIBLE
-                                rcStudents.layoutManager = LinearLayoutManager(context)
-                                rcStudents.adapter = StudentListAdapter(requireContext(),requireActivity(),parentFragmentManager, fragment, searchedStudents)
-                            } else {
-                                tvEmptyStudentList.visibility = View.VISIBLE
-                                rcStudents.visibility = View.GONE
-                            }
-                        }
-//                    if(lastWord!="") {
-//                    }
-                    }
-                } catch (e:Exception) {
-                    Log.e("Exception", "${e.message}")
-                }
-            }
-        })
 
     }
 
@@ -156,7 +120,7 @@ class StudentListScreen : Fragment(), StudentDeleteBottomSheet.OnButtonClickList
     fun getAllStudents(onStudentsRetrieved: (List<Student>) -> Unit) {
         progressBar.visibility = View.VISIBLE
         val db = FirebaseFirestore.getInstance()
-        db.collection("students")
+        db.collection("student")
             .get()
             .addOnSuccessListener { result ->
                 val StudentList = mutableListOf<Student>()
@@ -238,18 +202,17 @@ class StudentListAdapter(val context: Context, val activity: FragmentActivity, v
 
     inner class ItemViewHolder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
         private val tvStudentName: TextView = itemView.findViewById(R.id.tvStudentName)
-        private val layoutDelete: LinearLayout = itemView.findViewById(R.id.layoutDelete)
-        private val StudentHolder: LinearLayout = itemView.findViewById(R.id.StudentHolder)
+        //private val layoutDelete: LinearLayout = itemView.findViewById(R.id.layoutDelete)
+        private val StudentHolder: MaterialCardView = itemView.findViewById(R.id.StudentHolder)
 
-        fun bind(Student: Student) {
+        fun bind(student: Student) {
 
-            tvStudentName.text = Student.name
-            layoutDelete.setOnClickListener { 
-                
-            }
+            tvStudentName.text = student.name
+//            layoutDelete.setOnClickListener {
+//            }
             
             StudentHolder.setOnClickListener {
-
+                loadScreen(activity, StudentDetailsScreen(student.userId))
             }
 
         }
