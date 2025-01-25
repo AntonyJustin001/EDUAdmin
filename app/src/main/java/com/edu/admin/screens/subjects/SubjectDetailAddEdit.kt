@@ -218,34 +218,38 @@ class SubjectDetailAddEdit(Subject: String) : Fragment() {
     }
 
     private fun uploadImageToFirebase(imageUri: Uri) {
-        progressBar.visibility = View.VISIBLE
-        val storageReference = FirebaseStorage.getInstance().reference
-        val fileReference =
-            storageReference.child("subjectImages/" + System.currentTimeMillis() + ".jpg")
+        try {
+            progressBar.visibility = View.VISIBLE
+            val storageReference = FirebaseStorage.getInstance().reference
+            val fileReference =
+                storageReference.child("subjectImages/" + System.currentTimeMillis() + ".jpg")
 
-        val uploadTask = fileReference.putFile(imageUri)
+            val uploadTask = fileReference.putFile(imageUri)
 
-        // Show progress or handle completion
-        uploadTask.addOnSuccessListener {
-            // Image uploaded successfully
-            Toast.makeText(requireContext(), "Upload successful", Toast.LENGTH_SHORT).show()
+            // Show progress or handle completion
+            uploadTask.addOnSuccessListener {
+                // Image uploaded successfully
+                Toast.makeText(requireContext(), "Upload successful", Toast.LENGTH_SHORT).show()
 
-            // Get the download URL
-            fileReference.downloadUrl.addOnSuccessListener { uri ->
-                val downloadUrl = uri.toString()
-                loadImageFromUrl(requireContext(), downloadUrl, ivSubjectPic)
-                imageUrl = downloadUrl
-                Log.d("Firebase Storage", "Image URL: $downloadUrl")
+                // Get the download URL
+                fileReference.downloadUrl.addOnSuccessListener { uri ->
+                    val downloadUrl = uri.toString()
+                    loadImageFromUrl(requireContext(), downloadUrl, ivSubjectPic)
+                    imageUrl = downloadUrl
+                    Log.d("Firebase Storage", "Image URL: $downloadUrl")
+                    progressBar.visibility = View.GONE
+                }
+            }.addOnFailureListener {
+                // Handle failed upload
+                Toast.makeText(requireContext(), "Upload failed", Toast.LENGTH_SHORT).show()
                 progressBar.visibility = View.GONE
+            }.addOnProgressListener { taskSnapshot ->
+                // You can display the progress of the upload here
+                val progress = 100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
+                Log.d("Firebase Storage", "Upload is $progress% done")
             }
-        }.addOnFailureListener {
-            // Handle failed upload
-            Toast.makeText(requireContext(), "Upload failed", Toast.LENGTH_SHORT).show()
-            progressBar.visibility = View.GONE
-        }.addOnProgressListener { taskSnapshot ->
-            // You can display the progress of the upload here
-            val progress = 100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
-            Log.d("Firebase Storage", "Upload is $progress% done")
+        } catch (e:Exception) {
+            Log.e("Exception","Exception ==> ${e.message}")
         }
     }
 

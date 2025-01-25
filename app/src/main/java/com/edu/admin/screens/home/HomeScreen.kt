@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.edu.admin.R
 import com.edu.admin.models.Order
 import com.edu.admin.models.Product
+import com.edu.admin.models.Student
 import com.edu.admin.models.User
 import com.edu.admin.screens.notification.NotificationCreate
 import com.edu.admin.screens.orders.OrdersListScreen
@@ -22,13 +23,11 @@ import com.edu.admin.utils.loadScreen
 class HomeScreen : Fragment() {
 
     private lateinit var cvSubjects: MaterialCardView
-    private lateinit var cvOrders: MaterialCardView
     private lateinit var cvStudents: MaterialCardView
     private lateinit var cvTeachers: MaterialCardView
 
     private lateinit var tvSubjectsCount: TextView
     private lateinit var tvStudentsCount: TextView
-    private lateinit var tvOrderCount: TextView
     private lateinit var tvNotificationCount: TextView
 
 
@@ -43,19 +42,14 @@ class HomeScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         cvSubjects = view.findViewById(R.id.cvSubjects)
-        cvOrders = view.findViewById(R.id.cvOrders)
         cvStudents = view.findViewById(R.id.cvStudents)
         tvSubjectsCount = view.findViewById(R.id.tvSubjectsCount)
-        tvOrderCount = view.findViewById(R.id.tvOrderCount)
         tvStudentsCount = view.findViewById(R.id.tvStudentsCount)
         tvNotificationCount = view.findViewById(R.id.tvTeachersCount)
         cvTeachers =  view.findViewById(R.id.cvTeachers)
 
         cvSubjects.setOnClickListener {
             loadScreen(requireActivity(), SubjectListScreen())
-        }
-        cvOrders.setOnClickListener {
-            loadScreen(requireActivity(), OrdersListScreen())
         }
         cvStudents.setOnClickListener {
             loadScreen(requireActivity(), StudentListScreen())
@@ -69,13 +63,6 @@ class HomeScreen : Fragment() {
                 Log.e("Subjects","Subject - $it")
             }
             tvSubjectsCount.text = "${subjects.size}"
-        }
-
-        getAllOrders { orders ->
-            orders.forEach {
-                Log.e("orders","order - $it")
-            }
-            tvOrderCount.text = "${orders.size}"
         }
 
         getAllStudents { Students ->
@@ -123,17 +110,17 @@ class HomeScreen : Fragment() {
             }
     }
 
-    fun getAllStudents(onProductsRetrieved: (List<User>) -> Unit) {
+    fun getAllStudents(onProductsRetrieved: (List<Student>) -> Unit) {
         val db = FirebaseFirestore.getInstance()
-        db.collection("user")
+        db.collection("student")
             .get()
             .addOnSuccessListener { result ->
-                val users = mutableListOf<User>()
+                val students = mutableListOf<Student>()
                 for (document in result) {
-                    val user = document.toObject(User::class.java)
-                    users.add(user)
+                    val student = document.toObject(Student::class.java)
+                    students.add(student)
                 }
-                onProductsRetrieved(users)
+                onProductsRetrieved(students)
             }
             .addOnFailureListener { e ->
                 // Handle the error

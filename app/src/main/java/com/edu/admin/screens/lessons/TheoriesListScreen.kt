@@ -217,11 +217,11 @@ class TheoriesListScreen(subject: Subject, lesson: Lesson) : Fragment(),
         try {
             progressBar.visibility = View.VISIBLE
             val db = FirebaseFirestore.getInstance()
-            val TheoriesRef = db.collection("Subjects").document(subject.id)
-                .collection("Lessons").document(lessons.id)
-                .collection("Theories")
+            val TheoriesRef = db.collection("subjects").document(subject.id)
+                .collection("lessons").document(lessons.id)
+                .collection("theories")
             TheoriesRef
-                .whereEqualTo("id", theoriesId)
+                .whereEqualTo("theoriesId", theoriesId)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {

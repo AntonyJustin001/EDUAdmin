@@ -218,7 +218,7 @@ class VideosListScreen(subject: Subject, lesson: Lesson) : Fragment(),
                 .collection("lessons").document(lessons.id)
                 .collection("videos")
             VideosRef
-                .whereEqualTo("id", VideosId)
+                .whereEqualTo("videosId", VideosId)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {

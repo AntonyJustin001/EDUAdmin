@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_7sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:maxLines="2"
+            android:maxLines="5"
             android:ellipsize="end"
             android:fontFamily="@font/jost_bold"
             android:textColor="@color/black"

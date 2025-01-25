@@ -131,9 +131,9 @@ class QuizListScreen(subject: Subject, lesson: Lesson) : Fragment(),
         try {
             progressBar.visibility = View.VISIBLE
             val db = FirebaseFirestore.getInstance()
-            val QuizRef = db.collection("Subjects").document(subject.id)
-                .collection("Lessons").document(lessons.id)
-                .collection("Quiz")
+            val QuizRef = db.collection("subjects").document(subject.id)
+                .collection("lessons").document(lessons.id)
+                .collection("quiz")
             QuizRef
                 .whereEqualTo("id", QuizId)
                 .get()
